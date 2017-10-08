@@ -3,18 +3,22 @@ package asynctask.begi.com.asynctasksample;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.TextView;
 
 /**
  * Created by asus1 on 8.10.2017.
  */
-public class BackgroundTask extends AsyncTask<Void,Integer,Void> {
-
-    public BackgroundTask(Context context) {
-        this.context = context;
-    }
+public class BackgroundTask extends AsyncTask<Void,Integer,String> {
 
     Context context;
     ProgressDialog progressDialog;
+    TextView tvResult;
+
+    public BackgroundTask(Context context,TextView tvResult) {
+        this.context = context;
+        this.tvResult=tvResult;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -26,7 +30,7 @@ public class BackgroundTask extends AsyncTask<Void,Integer,Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected String doInBackground(Void... voids) {
 
         for(int i=0 ; i<101 ; i=i+10){
             try {
@@ -36,7 +40,7 @@ public class BackgroundTask extends AsyncTask<Void,Integer,Void> {
                 e.printStackTrace();
             }
         }
-        return null;
+        return "Sonuç yükleniyor...";
     }
 
     @Override
@@ -47,14 +51,9 @@ public class BackgroundTask extends AsyncTask<Void,Integer,Void> {
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        progressDialog.dismiss();
-    }
+    protected void onPostExecute(String result) {
+        tvResult.setText(result);
+        progressDialog.hide();
 
-    @Override
-    protected void onCancelled(Void result) {
-        super.onCancelled(result);
-        progressDialog.dismiss();
     }
 }
